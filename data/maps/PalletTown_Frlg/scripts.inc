@@ -62,12 +62,12 @@ PalletTown_EventScript_OakRatingScene::
 	applymovement LOCALID_PLAYER, PalletTown_Movement_PlayerWalkToLabFromHouse
 	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakWalkToLabFromHouse
 	waitmovement 0
-	opendoor 16, 13
+	opendoor 29, 12
 	waitdooranim
 	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakEnterLab
 	applymovement LOCALID_PLAYER, PalletTown_Movement_PlayerEnterLab
 	waitmovement 0
-	closedoor 16, 13
+	closedoor 29, 12
 	waitdooranim
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 7
 	setvar VAR_MAP_SCENE_PALLET_TOWN_OAK, 3
@@ -145,6 +145,19 @@ PalletTown_Movement_OakWalkToLabFromHouse::
 	walk_right
 	walk_right
 	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
 	walk_in_place_faster_up
 	step_end
 
@@ -164,6 +177,19 @@ PalletTown_Movement_PlayerWalkToLabFromHouse::
 	walk_right
 	walk_right
 	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
 	step_end
 
 PalletTown_EventScript_OakTriggerLeft::
@@ -177,6 +203,8 @@ PalletTown_EventScript_OakTriggerRight::
 	setvar VAR_TEMP_1, 1
 	goto PalletTown_EventScript_OakTrigger
 	end
+
+@Intro sequence with Oak at the beginning of the game
 
 PalletTown_EventScript_OakTrigger::
 	famechecker FAMECHECKER_OAK, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
@@ -202,12 +230,12 @@ PalletTown_EventScript_OakTrigger::
 	delay 30
 	call_if_eq VAR_TEMP_1, 0, PalletTown_EventScript_OakLeadPlayerToLabLeft
 	call_if_eq VAR_TEMP_1, 1, PalletTown_EventScript_OakLeadPlayerToLabRight
-	opendoor 16, 13
+	opendoor 29, 12
 	waitdooranim
 	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakEnterLab
 	applymovement LOCALID_PLAYER, PalletTown_Movement_PlayerEnterLab
 	waitmovement 0
-	closedoor 16, 13
+	closedoor 29, 12
 	waitdooranim
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 1
 	clearflag FLAG_HIDE_OAK_IN_HIS_LAB
@@ -265,36 +293,61 @@ PalletTown_Movement_OakEnterRight::
 	step_end
 
 	.macro walk_to_lab
-	walk_left
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_right
-	walk_right
-	walk_right
-	walk_right
+	walk_down       @ 0
+	walk_down       @ 1
+	walk_down       @ 2
+	walk_down       @ 3
+	walk_down       @ 4
+	walk_down       @ 5
+	walk_down       @ 6
+	walk_down       @ 7
+	walk_down       @ 8
+	walk_down       @ 9
+	walk_down       @ 10
+	walk_right      @ 1
+	walk_right      @ 2
+	walk_right      @ 3
+	walk_right      @ 4
+	walk_right      @ 5
+	walk_right      @ 6
+	walk_right      @ 7
+	walk_right      @ 8
+	walk_right      @ 9 right
+	walk_down       @ 1
+	walk_down       @ 2 down
+	walk_right      @ 1
+	walk_right      @ 2
+	walk_right      @ 3
+	walk_right      @ 4
+	walk_right      @ 5
+	walk_right      @ 6
+	walk_right      @ 7
+	walk_right      @ 8
+	walk_right      @ 9 right
 	.endm
 
 PalletTown_Movement_OakWalkToLabLeft::
 	walk_down
+	walk_left
 	walk_to_lab
-	walk_right
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
 	walk_in_place_faster_up
 	step_end
 
 PalletTown_Movement_OakWalkToLabRight::
 	walk_down
 	walk_left
+	walk_left
 	walk_to_lab
-	walk_right
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
 	walk_in_place_faster_up
 	step_end
 
@@ -306,18 +359,25 @@ PalletTown_Movement_OakEnterLab::
 PalletTown_Movement_PlayerWalkToLabLeft::
 	walk_down
 	walk_down
+	walk_left
 	walk_to_lab
+	walk_up
+	walk_up
+	walk_up          @ Player trails 1 step behind Oak safely
 	step_end
 
 PalletTown_Movement_PlayerWalkToLabRight::
 	walk_down
 	walk_down
 	walk_left
+	walk_left
 	walk_to_lab
+	walk_up
+	walk_up
+	walk_up          @ Player trails 1 step behind Oak safely
 	step_end
 
 PalletTown_Movement_PlayerEnterLab::
-	walk_right
 	walk_up
 	set_invisible
 	step_end
