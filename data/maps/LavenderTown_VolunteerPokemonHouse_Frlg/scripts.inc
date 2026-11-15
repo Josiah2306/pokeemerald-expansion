@@ -147,3 +147,81 @@ LavenderTown_VolunteerPokemonHouse_Text_PokemonMagazinesLineShelf::
 	.string "POKéMON INSIDER…\p"
 	.string "POKéMON FAN…$"
 
+LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_SkarmoryGift::
+    lock
+    faceplayer
+    goto_if_set FLAG_RECEIVED_LAVENDER_SKARMORY, LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_AlreadyReceivedSkarmory
+    msgbox LavenderTown_VolunteerPokemonHouse_Frlg_Text_WantSkarmory, MSGBOX_YESNO
+    goto_if_eq VAR_RESULT, NO, LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_DeclinedSkarmory
+    givemon SPECIES_SKARMORY, 30, ITEM_METAL_COAT, ITEM_POKE_BALL, NATURE_IMPISH, 1, MON_GENDERLESS, 0, 0, 0, 0, 0, 0, 31, 31, 31, 31, 31, 31, MOVE_STEEL_WING, MOVE_RAZOR_WING, MOVE_SPIKES, MOVE_ROOST
+    goto_if_eq VAR_RESULT, MON_GIVEN_TO_PARTY, LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_ReceiveSkarmoryParty
+    goto_if_eq VAR_RESULT, MON_GIVEN_TO_PC, LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_ReceiveSkarmoryPC
+    goto Common_EventScript_NoMoreRoomForPokemon
+    end
+
+LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_ReceiveSkarmoryParty::
+    call LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_ReceivedSkarmoryFanfare
+    msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
+    goto_if_eq VAR_RESULT, NO, LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_FinishSkarmoryGift
+    specialvar VAR_0x8004, CalculatePlayerPartyCount
+    subvar VAR_0x8004, 1
+    call Common_EventScript_NameReceivedPartyMon
+    goto LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_FinishSkarmoryGift
+    end
+
+LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_ReceiveSkarmoryPC::
+    call LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_ReceivedSkarmoryFanfare
+    msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
+    goto_if_eq VAR_RESULT, NO, LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_TransferSkarmoryToPC
+    call Common_EventScript_NameReceivedBoxMon
+    goto LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_TransferSkarmoryToPC
+    end
+
+LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_TransferSkarmoryToPC::
+    setvar VAR_TEMP_TRANSFERRED_SPECIES, SPECIES_SKARMORY
+    bufferspeciesname STR_VAR_1, SPECIES_SKARMORY
+    call Common_EventScript_TransferredToPC
+    goto LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_FinishSkarmoryGift
+    end
+
+LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_ReceivedSkarmoryFanfare::
+     playfanfare MUS_OBTAIN_ITEM
+    message LavenderTown_VolunteerPokemonHouse_Frlg_Text_PlayerReceivedSkarmory
+    waitmessage
+    waitfanfare
+    bufferspeciesname STR_VAR_1, SPECIES_SKARMORY
+    bufferspeciesname STR_VAR_2, SPECIES_SKARMORY
+    return
+
+LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_FinishSkarmoryGift::
+    setflag FLAG_RECEIVED_LAVENDER_SKARMORY
+    release
+    end
+
+LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_DeclinedSkarmory::
+    msgbox LavenderTown_VolunteerPokemonHouse_Frlg_Text_DeclinedSkarmory, MSGBOX_DEFAULT
+    release
+    end
+
+LavenderTown_VolunteerPokemonHouse_Frlg_EventScript_AlreadyReceivedSkarmory::
+    msgbox LavenderTown_VolunteerPokemonHouse_Frlg_Text_AlreadyReceivedSkarmory, MSGBOX_DEFAULT
+    release
+    end
+
+LavenderTown_VolunteerPokemonHouse_Frlg_Text_WantSkarmory:
+    .string "I rescued this SKARMORY while\n"
+    .string "hiking near Rock Tunnel.\p"
+    .string "MR. FUJI helped nurse it back to\n"
+    .string "full health, and now it's strong!\l"
+    .string "Will you take it on your journey?$"
+
+LavenderTown_VolunteerPokemonHouse_Frlg_Text_PlayerReceivedSkarmory:
+    .string "{PLAYER} received a SKARMORY!$"
+
+LavenderTown_VolunteerPokemonHouse_Frlg_Text_DeclinedSkarmory:
+    .string "I understand. It'll stay here with\n"
+    .string "MR. FUJI and me until you're ready.$"
+
+LavenderTown_VolunteerPokemonHouse_Frlg_Text_AlreadyReceivedSkarmory:
+    .string "That SKARMORY has wings of steel.\n"
+    .string "Take good care of it!$"
